@@ -312,8 +312,44 @@ public class Main {
     }
 
     private static boolean kingSafe() {
-        //bishop
+        //bishop and queen
         int temp = 1;
+        for (int i=-1; i<=1;i+=2) {
+            for (int j = -1; j <= 1; j += 2) {
+                try {
+                    while (" ".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8+temp*j])) {temp++;}
+                    if ("b".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8+temp*j]) ||
+                            "q".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8+temp*j])) {
+                        return false;
+                    }
+                } catch (Exception e) {}
+                temp = 1;
+            }
+        }
+        // rook/queen (two loops, which one will occur more often? It will affect time)
+        for (int i=-1; i<=1;i+=2) {
+            try {
+                while (" ".equals(chessBoard[kingPositionC/8][kingPositionC%8+temp*i])) {temp++;}
+                if ("r".equals(chessBoard[kingPositionC/8][kingPositionC%8+temp*i]) ||
+                        "q".equals(chessBoard[kingPositionC/8][kingPositionC%8+temp*i])) {
+                    return false;
+                }
+            } catch (Exception e) {}
+            temp = 1;
+            try {
+                while (" ".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8])) {temp++;}
+                if ("r".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8]) ||
+                        "q".equals(chessBoard[kingPositionC/8+temp*i][kingPositionC%8])) {
+                    return false;
+                }
+            } catch (Exception e) {}
+            temp = 1;
+
+
+        }
+
+
+
         return true;
     }
 
