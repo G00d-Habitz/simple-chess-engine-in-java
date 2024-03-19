@@ -6,7 +6,7 @@ public class Main {
 
     static String[][] chessBoard = {
             {"r", "n", "b", "q", "k", "b", "n", "r"},
-            {"p", "p", "p", "p", "p", "p", "p", "p"},
+            {"p", "p", "p", "p", "p", "P", "p", "p"},
             {" ", " ", " ", " ", " ", " ", " ", " "},
             {" ", " ", " ", " ", " ", " ", " ", " "},
             {" ", " ", " ", " ", " ", " ", " ", " "},
@@ -318,6 +318,44 @@ public class Main {
 
     private static String possibleP(int i) {
         String list = "";
+        String oldPiece;
+        int r = i / 8, c = i % 8;
+        for (int j = -1; j <= 1; j += 2) {
+            try {
+                // capture
+                if ( (Character.isLowerCase(chessBoard[r-1][c+j].charAt(0)) && i>=16)) {
+                    oldPiece = chessBoard[r-1][c + j];
+                    chessBoard[r][c] = " ";
+                    chessBoard[r-1][c + j] = "P";
+                    if (kingSafe()) {
+                        list = list + r + c + (r-1) + (c + j) + oldPiece;
+                    }
+                    chessBoard[r][c] = "P";
+                    chessBoard[r-1][c + j] = oldPiece;
+                }
+            } catch (Exception e) {}
+            try {
+                // promotion and capture
+                if ( (Character.isLowerCase(chessBoard[r-1][c+j].charAt(0)) && i<=16)) {
+                    String[] temp = {"Q", "R", "N", "B"};
+                    for (int k=0; k<4; k++) {
+                        oldPiece = chessBoard[r-1][c + j];
+                        chessBoard[r][c] = " ";
+                        chessBoard[r-1][c + j] = temp[k];
+                        if (kingSafe()) {
+                            // column1, column2, captured-piece, new-piece
+                            list = list + c + (c + j) + oldPiece+temp[k] + "P";
+                        }
+                        chessBoard[r][c] = "P";
+                        chessBoard[r-1][c + j] = oldPiece;
+                    }
+                }
+            } catch (Exception e) {}
+
+
+
+
+    }
         return list;
     }
 
