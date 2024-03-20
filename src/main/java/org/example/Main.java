@@ -6,7 +6,7 @@ public class Main {
 
     static String[][] chessBoard = {
             {"r", "n", "b", "q", "k", "b", "n", "r"},
-            {"p", "p", "p", "p", "p", "P", "p", "p"},
+            {"p", "p", "p", "p", "p", "p", "p", "p"},
             {" ", " ", " ", " ", " ", " ", " ", " "},
             {" ", " ", " ", " ", " ", " ", " ", " "},
             {" ", " ", " ", " ", " ", " ", " ", " "},
@@ -351,11 +351,52 @@ public class Main {
                     }
                 }
             } catch (Exception e) {}
-
-
-
-
     }
+        try {
+            // move one up
+            if (" ".equals(chessBoard[r-1][c]) && i>=16) {
+                oldPiece = chessBoard[r-1][c];
+                chessBoard[r][c] = " ";
+                chessBoard[r-1][c] = "P";
+                if (kingSafe()) {
+                    list = list + r + c + (r-1) + (c) + oldPiece;
+                }
+                chessBoard[r][c] = "P";
+                chessBoard[r-1][c] = oldPiece;
+            }
+        } catch (Exception e) {}
+        try {
+            // move one up and promote
+            if (" ".equals(chessBoard[r-1][c]) && i<16) {
+                String[] temp = {"Q", "R", "N", "B"};
+                for (int k = 0; k < 4; k++) {
+                    oldPiece = chessBoard[r - 1][c];
+                    chessBoard[r][c] = " ";
+                    chessBoard[r - 1][c] = temp[k];
+                    if (kingSafe()) {
+                        // column1, column2, captured-piece, new-piece
+                        list = list + c + (c) + oldPiece + temp[k] + "P";
+                    }
+                    chessBoard[r][c] = "P";
+                    chessBoard[r - 1][c] = oldPiece;
+                }
+            }
+        } catch (Exception e) {}
+        try {
+            // move two up from initial position
+            if (" ".equals(chessBoard[r-1][c]) && " ".equals(chessBoard[r-2][c]) && i>=48) {
+                oldPiece = chessBoard[r-2][c];
+                chessBoard[r][c] = " ";
+                chessBoard[r-2][c] = "P";
+                if (kingSafe()) {
+                    list = list + r + c + (r-2) + (c) + oldPiece;
+                }
+                chessBoard[r][c] = "P";
+                chessBoard[r-2][c] = oldPiece;
+            }
+        } catch (Exception e) {}
+
+
         return list;
     }
 
