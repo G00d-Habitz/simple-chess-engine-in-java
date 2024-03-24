@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.*;
+import java.util.*;
 
 public class Main {
 
@@ -32,9 +33,36 @@ public class Main {
         f.setSize(690, 690);
         f.setVisible(true);
 
+        makeMove("7657 ");
+        undoMove("7657 ");
         System.out.println(possibleMoves());
+        for (int i=0;i<8;i++) {
+            System.out.println(Arrays.toString(chessBoard[i]));
+        }
 
     }
+
+    public static void makeMove (String move) {
+        if (move.charAt(4) != 'P') {
+            chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
+            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
+
+        } else { // if pawn promotion
+            chessBoard[1][Character.getNumericValue(move.charAt(0))] = " ";
+            chessBoard[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(3));
+        }
+    }
+    public static void undoMove (String move) {
+        if (move.charAt(4) != 'P') {
+            chessBoard[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
+            chessBoard[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
+        } else { // if pawn promotion
+            chessBoard[1][Character.getNumericValue(move.charAt(0))] = "P";
+            chessBoard[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(2));
+        }
+
+    }
+
 
     public static String possibleMoves() {
         String list = "";
@@ -217,7 +245,7 @@ public class Main {
                         if (kingSafe()) {
                             list = list + r + c + (r + j) + (c + k * 2) + oldPiece;
                         }
-                        chessBoard[r][c] = "K";
+                        chessBoard[r][c] = "N";
                         chessBoard[r + j][c + k * 2] = oldPiece;
                     }
                 } catch (Exception e) {
@@ -230,7 +258,7 @@ public class Main {
                         if (kingSafe()) {
                             list = list + r + c + (r + j * 2) + (c + k) + oldPiece;
                         }
-                        chessBoard[r][c] = "K";
+                        chessBoard[r][c] = "N";
                         chessBoard[r + j * 2][c + k] = oldPiece;
                     }
                 } catch (Exception e) {
